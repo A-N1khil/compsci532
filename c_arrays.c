@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 // We would be working with square matrices of a definite size
-#define N 3
+#define N 500
 
 void fillArray(int arr[N][N], int min, int max) {
 
@@ -19,21 +20,72 @@ void fillArray(int arr[N][N], int min, int max) {
 	}
 }
 
+void printArray(int arr[N][N]) {
+	int i, j, k;
+	for (i = 0; i < N; i++) {
+		for (j = 0; j < N; j++) {
+			printf("%d ", arr[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+
+// Multiply in order I, J and K
+void multiplyIJK(int a[N][N], int b[N][N], int c[N][N]) {
+	int sum = 0;
+	int i, j, k;
+	for (i = 0; i < N; i++) {
+		sum = 0;
+		for (j = 0; j < N; j++) {
+			for (k = 0; k < N; k++) {
+				// sum += a[i][k] * b[k][j];
+				c[i][j] += a[i][k] * b[k][j];
+			}
+			// c[i][j] = sum;
+		}
+	}
+}
+
+void multiplyIKJ(int a[N][N], int b[N][N], int c[N][N]) {
+	int sum = 0;
+	int i, j, k;
+	for (i = 0; i < N; i++) {
+		sum = 0;
+		for (k = 0; k < N; k++) {
+			for (j = 0; j < N; j++) {
+				// sum += a[i][k] * b[k][j];
+				c[i][j] += a[i][k] * b[k][j];
+			}
+			// c[i][j] = sum;
+		}
+	}
+}
+
+void printTimes(struct timeval start, struct timeval end) {
+	// Get microseconds
+	long ms = end.tv_usec - start.tv_usec;
+	printf("\nGTOD = %ld\n", ms);
+}
+
 int main() {
-	printf("%s - %d\n", "Hello World", N);
 	int a[N][N];
 	int b[N][N];
 	int c[N][N];
 
 	// Fill up the array with random numbers between 1 to 10
 	fillArray(a, 1, 10);
+	fillArray(b, 1, 10);
+	
+	// Initialize clock before program start
+	struct timeval start, end;
+	gettimeofday(&start, NULL);
 
-	int i, j;
-	for (i = 0; i < N; i++) {
-		for (j = 0; j< N; j++) {
-			printf("%d ", a[i][j]);
-		}
-		printf("\n");
-	}
+	// code here
+	multiplyIJK(a, b, c);
+
+	// Subtract the initial value of t to get time taken
+	gettimeofday(&end, NULL);
+	printTimes(start, end);
 	return 0;
 }
