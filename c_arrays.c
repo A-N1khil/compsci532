@@ -4,9 +4,11 @@
 #include <sys/time.h>
 
 // We would be working with square matrices of a definite size
-#define N 2
+#define N 500
 
-typedef void (*f)(int[][], int[][], int[][]);
+// Defining a typedef to create an array of functions so that we dont work hard to call them
+// individually
+typedef void (*f)(int[N][N], int[N][N], int[N][N]);
 
 void fillArray(int arr[N][N], int min, int max) {
 
@@ -87,6 +89,28 @@ void multiplyJKI(int a[N][N], int b[N][N], int c[N][N]) {
 	}
 }
 
+void multiplyKIJ(int a[N][N], int b[N][N], int c[N][N]) {
+	int i, j, k;
+	for (k = 0; k < N; k++) {
+		for (i = 0; i < N; i++) {
+			for (j = 0; j < N; j++) {
+				c[i][j] += a[i][k] * b[k][j];
+			}
+		}
+	}
+}
+
+void multiplyKJI(int a[N][N], int b[N][N], int c[N][N]) {
+	int i, j, k;
+	for (k = 0; k < N; k++) {
+		for (j = 0; j < N; j++) {
+			for (i = 0; i < N; i++) {
+				c[i][j] += a[i][k] * b[k][j];
+			}
+		}
+	}
+}
+
 void printTimes(struct timeval start, struct timeval end) {
 	// Get microseconds
 	long ms = end.tv_usec - start.tv_usec;
@@ -102,18 +126,18 @@ int main() {
 	fillArray(a, 1, 5);
 	fillArray(b, 1, 5);
 
-	f multiplix[4] = { *multiplyIJK, *multiplyIKJ, *multiplyJIK, *multiplyJKI};
+	f multiplix[6] = { *multiplyIJK, *multiplyIKJ, *multiplyJIK, *multiplyJKI, *multiplyKIJ, *multiplyKJI};
 
 	// Initialize clock before program start
 	struct timeval start, end;
 
-	for (int i=0; i<4; i++) {
+	for (int i=0; i<6; i++) {
 		clearArray(c);
 		gettimeofday(&start, NULL);
 		multiplix[i](a, b, c);
 		gettimeofday(&end, NULL);
 		printTimes(start, end);
-		printArray(c);
+		// printArray(c);
 	}
 	return 0;
 }
