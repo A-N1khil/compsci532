@@ -6,6 +6,8 @@
 // We would be working with square matrices of a definite size
 #define N 2
 
+typedef void (*f)(int[][], int[][], int[][]);
+
 void fillArray(int arr[N][N], int min, int max) {
 
 	// Setting a seed
@@ -38,9 +40,7 @@ void printArray(int arr[N][N]) {
 
 
 // Multiply in order I, J and K
-void multiplyIJK(int a[N][N], int b[N][N]) {
-	int c[N][N];
-	clearArray(c);
+void multiplyIJK(int a[N][N], int b[N][N], int c[N][N]) {
 	int i, j, k;
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
@@ -50,13 +50,10 @@ void multiplyIJK(int a[N][N], int b[N][N]) {
 			}
 		}
 	}
-	printArray(c);
 }
 
-void multiplyIKJ(int a[N][N], int b[N][N]) {
-	int c[N][N];
+void multiplyIKJ(int a[N][N], int b[N][N], int c[N][N]) {
 	int i, j, k;
-	clearArray(c);
 	for (i = 0; i < N; i++) {
 		for (k = 0; k < N; k++) {
 			for (j = 0; j < N; j++) {
@@ -64,11 +61,9 @@ void multiplyIKJ(int a[N][N], int b[N][N]) {
 			}
 		}
 	}
-	printArray(c);
 }
 
-void multiplyJIK(int a[N][N], int b[N][N]) {
-	int c[N][N];
+void multiplyJIK(int a[N][N], int b[N][N], int c[N][N]) {
 	int i, j, k;
 	clearArray(c);
 	for (j = 0; j < N; j++) {
@@ -79,12 +74,9 @@ void multiplyJIK(int a[N][N], int b[N][N]) {
 			}
 		}
 	}
-	printArray(c);
 }
 
-void multiplyJKI(int a[N][N], int b[N][N]) {
-	int c[N][N];
-	clearArray(c);
+void multiplyJKI(int a[N][N], int b[N][N], int c[N][N]) {
 	int i, j, k;
 	for (j = 0; j < N; j++) {
 		for (k = 0; k < N; k++) {
@@ -93,7 +85,6 @@ void multiplyJKI(int a[N][N], int b[N][N]) {
 			}
 		}
 	}
-	printArray(c);
 }
 
 void printTimes(struct timeval start, struct timeval end) {
@@ -105,23 +96,24 @@ void printTimes(struct timeval start, struct timeval end) {
 int main() {
 	int a[N][N];
 	int b[N][N];
+	int c[N][N];
 
 	// Fill up the array with random numbers between 1 to 10
 	fillArray(a, 1, 5);
 	fillArray(b, 1, 5);
-	
+
+	f multiplix[4] = { *multiplyIJK, *multiplyIKJ, *multiplyJIK, *multiplyJKI};
+
 	// Initialize clock before program start
 	struct timeval start, end;
-	gettimeofday(&start, NULL);
 
-	// code here
-	multiplyIJK(a, b);
-	multiplyIKJ(a, b);
-	multiplyJKI(a, b);
-	multiplyJIK(a, b);
-
-	// Subtract the initial value of t to get time taken
-	gettimeofday(&end, NULL);
-	printTimes(start, end);
+	for (int i=0; i<4; i++) {
+		clearArray(c);
+		gettimeofday(&start, NULL);
+		multiplix[i](a, b, c);
+		gettimeofday(&end, NULL);
+		printTimes(start, end);
+		printArray(c);
+	}
 	return 0;
 }
