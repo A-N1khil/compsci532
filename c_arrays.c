@@ -20,6 +20,12 @@ void fillArray(int arr[N][N], int min, int max) {
 	}
 }
 
+void clearArray(int arr[N][N]) {
+	for (int i=0; i<N; i++)
+		for (int j=0; j<N; j++)
+			arr[i][j] = 0;
+}
+
 void printArray(int arr[N][N]) {
 	int i, j, k;
 	for (i = 0; i < N; i++) {
@@ -34,16 +40,14 @@ void printArray(int arr[N][N]) {
 // Multiply in order I, J and K
 void multiplyIJK(int a[N][N], int b[N][N]) {
 	int c[N][N];
-	int sum = 0;
+	clearArray(c);
 	int i, j, k;
 	for (i = 0; i < N; i++) {
-		sum = 0;
 		for (j = 0; j < N; j++) {
+			c[i][j] = 0;
 			for (k = 0; k < N; k++) {
-				// sum += a[i][k] * b[k][j];
 				c[i][j] += a[i][k] * b[k][j];
 			}
-			// c[i][j] = sum;
 		}
 	}
 	printArray(c);
@@ -51,33 +55,28 @@ void multiplyIJK(int a[N][N], int b[N][N]) {
 
 void multiplyIKJ(int a[N][N], int b[N][N]) {
 	int c[N][N];
-	int sum = 0;
 	int i, j, k;
+	clearArray(c);
 	for (i = 0; i < N; i++) {
-		sum = 0;
 		for (k = 0; k < N; k++) {
 			for (j = 0; j < N; j++) {
-				// sum += a[i][k] * b[k][j];
 				c[i][j] += a[i][k] * b[k][j];
 			}
-			// c[i][j] = sum;
 		}
 	}
-	// printArray(c);
+	printArray(c);
 }
 
 void multiplyJIK(int a[N][N], int b[N][N]) {
 	int c[N][N];
-	int sum = 0;
 	int i, j, k;
+	clearArray(c);
 	for (j = 0; j < N; j++) {
-		sum = 0;
 		for (i = 0; i < N; i++) {
+			c[i][j] = 0;
 			for (k = 0; k < N; k++) {
-				// sum += a[i][k] * b[k][j];
 				c[i][j] += a[i][k] * b[k][j];
 			}
-			// c[i][j] = sum;
 		}
 	}
 	printArray(c);
@@ -85,19 +84,16 @@ void multiplyJIK(int a[N][N], int b[N][N]) {
 
 void multiplyJKI(int a[N][N], int b[N][N]) {
 	int c[N][N];
-	int sum = 0;
+	clearArray(c);
 	int i, j, k;
 	for (j = 0; j < N; j++) {
-		sum = 0;
 		for (k = 0; k < N; k++) {
 			for (i = 0; i < N; i++) {
-				// sum += a[i][k] * b[k][j];
 				c[i][j] += a[i][k] * b[k][j];
 			}
-			// c[i][j] = sum;
 		}
 	}
-	// printArray(c);
+	printArray(c);
 }
 
 void printTimes(struct timeval start, struct timeval end) {
@@ -121,8 +117,8 @@ int main() {
 	// code here
 	multiplyIJK(a, b);
 	multiplyIKJ(a, b);
-	multiplyJIK(a, b);
 	multiplyJKI(a, b);
+	multiplyJIK(a, b);
 
 	// Subtract the initial value of t to get time taken
 	gettimeofday(&end, NULL);
