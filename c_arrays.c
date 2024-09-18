@@ -137,6 +137,7 @@ int main() {
 		multiplix[i](a, b, c);
 		gettimeofday(&end, NULL);
 		printTimes(start, end);
+		delay(3000);
 		// printArray(c);
 	}
 	return 0;
