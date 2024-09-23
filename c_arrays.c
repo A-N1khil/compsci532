@@ -4,7 +4,7 @@
 #include <sys/time.h>
 
 // We would be working with square matrices of a definite size
-#define N 500
+#define N 100
 
 // Defining a typedef to create an array of functions so that we dont work hard to call them
 // individually
