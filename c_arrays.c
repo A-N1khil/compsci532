@@ -4,7 +4,7 @@
 #include <sys/time.h>
 
 // We would be working with square matrices of a definite size
-#define N 500
+#define N 100
 
 // Defining a typedef to create an array of functions so that we dont work hard to call them
 // individually
@@ -13,15 +13,12 @@ typedef void (*f)(int[N][N], int[N][N], int[N][N]);
 void fillArray(int arr[N][N], int min, int max) {
 
 	// Setting a seed
-	unsigned int seed = time(0);
+	for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
 
-	int i, j;
-	for (i = 0; i < N; i++) {
-		for (j = 0; j < N; j++) {
-			int randomNum = rand_r(&seed) % (max - min + 1) + min;
-			arr[i][j] = randomNum;
-		}
-	}
+            arr[i][j] = (double) rand() / (double) RAND_MAX;
+        }
+    }
 }
 
 void clearArray(int arr[N][N]) {
@@ -111,10 +108,11 @@ void multiplyKJI(int a[N][N], int b[N][N], int c[N][N]) {
 	}
 }
 
-void printTimes(struct timeval start, struct timeval end) {
-	// Get microseconds
-	long ms = end.tv_usec - start.tv_usec;
-	printf("\nGTOD = %ld\n", ms);
+void printTimes(struct timespec start, struct timespec end) {
+	
+    double time_spent;
+    time_spent = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1000000000.0;
+    printf("Elapsed time in seconds: %f \n", time_spent);
 }
 
 int main() {
@@ -129,13 +127,46 @@ int main() {
 	f multiplix[6] = { *multiplyIJK, *multiplyIKJ, *multiplyJIK, *multiplyJKI, *multiplyKIJ, *multiplyKJI};
 
 	// Initialize clock before program start
-	struct timeval start, end;
+	struct timespec start, end;
 
+	// Making spaces for individual runs
+	// clock_gettime(CLOCK_REALTIME, &start);
+	// multiplyIJK(a, b, c);
+	// clock_gettime(CLOCK_REALTIME, &end);
+	// printTimes(start, end);
+
+	// clock_gettime(CLOCK_REALTIME, &start);
+	// multiplyIKJ(a, b, c);
+	// clock_gettime(CLOCK_REALTIME, &end);
+	// printTimes(start, end);
+
+	// clock_gettime(CLOCK_REALTIME, &start);
+	// multiplyJIK(a, b, c);
+	// clock_gettime(CLOCK_REALTIME, &end);
+	// printTimes(start, end);
+
+	// clock_gettime(CLOCK_REALTIME, &start);
+	// multiplyJKI(a, b, c);
+	// clock_gettime(CLOCK_REALTIME, &end);
+	// printTimes(start, end);
+
+	// clock_gettime(CLOCK_REALTIME, &start);
+	// multiplyKIJ(a, b, c);
+	// clock_gettime(CLOCK_REALTIME, &end);
+	// printTimes(start, end);
+
+	// clock_gettime(CLOCK_REALTIME, &start);
+	// multiplyKJI(a, b, c);
+	// clock_gettime(CLOCK_REALTIME, &end);
+	// printTimes(start, end);
+
+	
+	// Uncomment this block to run all the functions in a loop
 	for (int i=0; i<6; i++) {
 		clearArray(c);
-		gettimeofday(&start, NULL);
+		clock_gettime(CLOCK_REALTIME, &start);
 		multiplix[i](a, b, c);
-		gettimeofday(&end, NULL);
+		clock_gettime(CLOCK_REALTIME, &end);
 		printTimes(start, end);
 		// printArray(c);
 	}
