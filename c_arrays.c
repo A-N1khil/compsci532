@@ -4,7 +4,7 @@
 #include <sys/time.h>
 
 // We would be working with square matrices of a definite size
-#define N 100
+#define N 500
 
 // Defining a typedef to create an array of functions so that we dont work hard to call them
 // individually
@@ -130,45 +130,45 @@ int main() {
 	struct timespec start, end;
 
 	// Making spaces for individual runs
-	// clock_gettime(CLOCK_REALTIME, &start);
-	// multiplyIJK(a, b, c);
-	// clock_gettime(CLOCK_REALTIME, &end);
-	// printTimes(start, end);
+	clock_gettime(CLOCK_REALTIME, &start);
+	multiplyIJK(a, b, c);
+	clock_gettime(CLOCK_REALTIME, &end);
+	printTimes(start, end);
 
-	// clock_gettime(CLOCK_REALTIME, &start);
-	// multiplyIKJ(a, b, c);
-	// clock_gettime(CLOCK_REALTIME, &end);
-	// printTimes(start, end);
+	clock_gettime(CLOCK_REALTIME, &start);
+	multiplyIKJ(a, b, c);
+	clock_gettime(CLOCK_REALTIME, &end);
+	printTimes(start, end);
 
-	// clock_gettime(CLOCK_REALTIME, &start);
-	// multiplyJIK(a, b, c);
-	// clock_gettime(CLOCK_REALTIME, &end);
-	// printTimes(start, end);
+	clock_gettime(CLOCK_REALTIME, &start);
+	multiplyJIK(a, b, c);
+	clock_gettime(CLOCK_REALTIME, &end);
+	printTimes(start, end);
 
-	// clock_gettime(CLOCK_REALTIME, &start);
-	// multiplyJKI(a, b, c);
-	// clock_gettime(CLOCK_REALTIME, &end);
-	// printTimes(start, end);
+	clock_gettime(CLOCK_REALTIME, &start);
+	multiplyJKI(a, b, c);
+	clock_gettime(CLOCK_REALTIME, &end);
+	printTimes(start, end);
 
-	// clock_gettime(CLOCK_REALTIME, &start);
-	// multiplyKIJ(a, b, c);
-	// clock_gettime(CLOCK_REALTIME, &end);
-	// printTimes(start, end);
+	clock_gettime(CLOCK_REALTIME, &start);
+	multiplyKIJ(a, b, c);
+	clock_gettime(CLOCK_REALTIME, &end);
+	printTimes(start, end);
 
-	// clock_gettime(CLOCK_REALTIME, &start);
-	// multiplyKJI(a, b, c);
-	// clock_gettime(CLOCK_REALTIME, &end);
-	// printTimes(start, end);
+	clock_gettime(CLOCK_REALTIME, &start);
+	multiplyKJI(a, b, c);
+	clock_gettime(CLOCK_REALTIME, &end);
+	printTimes(start, end);
 
 	
 	// Uncomment this block to run all the functions in a loop
-	for (int i=0; i<6; i++) {
-		clearArray(c);
-		clock_gettime(CLOCK_REALTIME, &start);
-		multiplix[i](a, b, c);
-		clock_gettime(CLOCK_REALTIME, &end);
-		printTimes(start, end);
-		// printArray(c);
-	}
+	// for (int i=0; i<6; i++) {
+	// 	clearArray(c);
+	// 	clock_gettime(CLOCK_REALTIME, &start);
+	// 	multiplix[i](a, b, c);
+	// 	clock_gettime(CLOCK_REALTIME, &end);
+	// 	printTimes(start, end);
+	// 	// printArray(c);
+	// }
 	return 0;
 }
