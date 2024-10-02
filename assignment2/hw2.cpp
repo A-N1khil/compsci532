@@ -23,6 +23,7 @@ using std::thread;
 
 #define MAX_ARRAY_SIZE 10000000
 #define NUM_TIMES_SPIN 100000000
+#define max_threads 4
 
 /* If you have access to a linux enviroment, 
 you can enable the pin function to fix the binding of threads to cores. 
@@ -72,10 +73,11 @@ void read_and_write_same_cache(int i, int *ptr) {
     }
 }
 
-void coherency_tests() {
-    int max_threads = 4;
+void coherency_tests(int timings[3][max_threads]) {
+    int testCounter;
     vector<thread> workers;
     for(auto num_threads = 1; num_threads <= max_threads; ++num_threads) {
+        testCounter = 0;
         // test 1: 
         int *test1 = new int[1];
         test1[0] = 3;
@@ -90,7 +92,8 @@ void coherency_tests() {
         }
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start).count();
-        cout << "Test 1 " << num_threads << " threads " << duration << endl;
+        // cout << "Test 1 " << num_threads << " threads " << duration << endl;
+        timings[testCounter++][num_threads - 1] = duration;
         delete[] test1;
         workers.clear();
 
@@ -108,7 +111,8 @@ void coherency_tests() {
         }
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start).count();
-        cout << "Test 2 " << num_threads << " threads " << duration << endl;
+        // cout << "Test 2 " << num_threads << " threads " << duration << endl;
+        timings[testCounter++][num_threads - 1] = duration;
         delete[] test2;
         workers.clear();
 
@@ -126,7 +130,8 @@ void coherency_tests() {
         }
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start).count();
-        cout << "Test 3 " << num_threads << " threads " << duration << endl;
+        // cout << "Test 3 " << num_threads << " threads " << duration << endl;
+        timings[testCounter++][num_threads - 1] = duration;
         delete[] test3;
         workers.clear();
     }
@@ -134,6 +139,12 @@ void coherency_tests() {
 
 int main(int argc, char **argv) {
     cout << "COHERENCY: " << endl;
-    coherency_tests();
+    int timings[3][max_threads];
+    coherency_tests(timings);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < max_threads; j++) {
+            cout << "Test " << i+1 << " Thread " << j+1 << " Time " << timings[i][j] << " " << endl;
+        }
+    }
     return 1;
 }
