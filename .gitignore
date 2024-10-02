@@ -1,2 +1,9 @@
 *.out
 .DS_Store
+.vscode
+
+# Program executables
+hw2
+
+# Object files
+**/*.dsYM

@@ -23,22 +23,22 @@ using std::thread;
 
 #define MAX_ARRAY_SIZE 10000000
 #define NUM_TIMES_SPIN 100000000
-#define max_threads 8
+#define max_threads 2
 
 /* If you have access to a linux enviroment, 
 you can enable the pin function to fix the binding of threads to cores. 
 */
-// void pin(int core_id) {
-//     cpu_set_t cpuset;
-//     CPU_ZERO(&cpuset);
-//     CPU_SET(core_id, &cpuset);
+void pin(int core_id) {
+    cpu_set_t cpuset;
+    CPU_ZERO(&cpuset);
+    CPU_SET(core_id, &cpuset);
 
-//     pthread_t current_thread = pthread_self();
-//     pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
-// }
+    pthread_t current_thread = pthread_self();
+    pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
+}
 
 void read_only_same_pos(int i, int *ptr) {
-    // pin(i);
+    pin(i);
     int acc = 0;
     for(auto spin = 0; spin < NUM_TIMES_SPIN; ++spin) {
         acc += *ptr;
@@ -46,7 +46,7 @@ void read_only_same_pos(int i, int *ptr) {
 }
 
 void read_and_write_same_pos(int i, int *ptr) {
-    // pin(i);
+    pin(i);
     int acc = 0;
     for(auto spin = 0; spin < NUM_TIMES_SPIN; ++spin) {
         if(i == 0) {
@@ -60,7 +60,7 @@ void read_and_write_same_pos(int i, int *ptr) {
 }
 
 void read_and_write_same_cache(int i, int *ptr) {
-    // pin(i);
+    pin(i);
     int acc = 0;
     for(auto spin = 0; spin < NUM_TIMES_SPIN; ++spin) {
         if(i == 0) {
