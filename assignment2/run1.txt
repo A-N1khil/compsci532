@@ -1,0 +1,7 @@
+COHERENCY: 
+Test 1 Thread 1 Time 68069 
+Test 1 Thread 2 Time 60985 
+Test 2 Thread 1 Time 466777 
+Test 2 Thread 2 Time 17973877 
+Test 3 Thread 1 Time 463000 
+Test 3 Thread 2 Time 26910397 
