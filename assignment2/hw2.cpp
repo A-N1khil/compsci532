@@ -23,7 +23,7 @@ using std::thread;
 
 #define MAX_ARRAY_SIZE 10000000
 #define NUM_TIMES_SPIN 100000000
-#define max_threads 4
+#define max_threads 8
 
 /* If you have access to a linux enviroment, 
 you can enable the pin function to fix the binding of threads to cores. 
@@ -146,5 +146,5 @@ int main(int argc, char **argv) {
             cout << "Test " << i+1 << " Thread " << j+1 << " Time " << timings[i][j] << " " << endl;
         }
     }
-    return 1;
+    return 0;
 }
