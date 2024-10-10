@@ -7,3 +7,6 @@ hw2
 
 # Object files
 **/*.dsYM
+
+# PyCharm
+.idea/
