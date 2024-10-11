@@ -3,7 +3,7 @@ from pyspark.sql.functions import explode, udf, size
 import assignment3.data_cleaner as dc
 import importlib
 from pyspark.sql.types import ArrayType, StringType
-from itertools import combinations_with_replacement
+from itertools import combinations_with_replacement, combinations
 
 # Reload the module
 importlib.reload(dc)
@@ -26,13 +26,24 @@ hamlet_df = dc.clean_dataset(hamlet_df, should_split_explode=False)
 # Get the list of words and convert them to pairs
 def create_pairs(sentence):
     # set will remove duplicates
-    all_words = list(set([word for word in sentence.split(' ') if word != '']))
+    splitted = sentence.split(' ')
+    word_dict = dict({word: splitted.count(word) for word in splitted})
 
     # Create pairs using itertools
-    pairs = list(combinations_with_replacement(all_words, 2))
+    pairs = list(combinations_with_replacement(word_dict, 2))
+
+    return_list = []
+    """
+    Why this?
+    Assuming we have a sentence with multiple occurrences of the different words in a pair. For eg - "apple cat apple ball"
+    We take the maximum occurrence of either word in th pair because that would be the maximum time that pair would appear in the sentence
+    In the above example, the pair (apple, cat) and the pair (apple, ball) would appear twice. because apple appears twice in the sentence.
+    """
+    for pair in pairs:
+        return_list.extend([f"({pair[0]}, {pair[1]})" for _ in range(max(word_dict[pair[0]], word_dict[pair[1]]))])
 
     # Add pairs to the dataframe as constant string literals.
-    return [f"({pair[0]}, {pair[1]})" for pair in pairs]
+    return return_list
 
 """
 IMPLEMENTATION NOTE:
