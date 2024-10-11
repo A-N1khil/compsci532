@@ -10,3 +10,6 @@ hw2
 
 # PyCharm
 .idea/
+
+# Do not include all zip assignments
+**/*.zip
