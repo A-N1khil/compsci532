@@ -13,3 +13,6 @@ hw2
 
 # Do not include all zip assignments
 **/*.zip
+
+# Remove all __pycache__ directories
+**/__pycache__/
