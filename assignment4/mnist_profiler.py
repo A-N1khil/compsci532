@@ -106,7 +106,7 @@ def test(model, device, test_loader):
 # Add profile function
 def profile(model, device, train_loader):
     dataiter = iter(train_loader)
-    data, target = dataiter.next()
+    data, target = next(dataiter)
     data, target = data.to(device), target.to(device)
     with torch.autograd.profiler.profile(use_cuda=False) as prof:
         model(data[0].reshape(1,1,28,28))
