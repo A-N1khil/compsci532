@@ -110,7 +110,7 @@ def profile(model, device, train_loader):
     data, target = data.to(device), target.to(device)
     with torch.autograd.profiler.profile(use_cuda=False) as prof:
         model(data[0].reshape(1,1,28,28))
-    print(prof)
+    print(prof.table(sort_by="self_cpu_time_total", row_limit=10))
 
 def main():
     # Training settings
@@ -140,6 +140,7 @@ def main():
     torch.manual_seed(args.seed)
 
     device = torch.device("cuda" if use_cuda else "cpu")
+    print(device)
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
