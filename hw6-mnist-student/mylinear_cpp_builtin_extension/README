@@ -2,5 +2,4 @@ https://pytorch.org/tutorials/advanced/cpp_extension.html
 
 # Setup
 
-python3 setup.py install --user
-
+python3 setup.py install
