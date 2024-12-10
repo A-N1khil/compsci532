@@ -56,7 +56,24 @@ class custompythonLinearFunction(torch.autograd.Function):
 def custompythonTensorMM(A, B):
     # TODO put custom matrix multiply code here
     # should be equivalent to return torch.mm(A, B)
-    return torch.mm(A,B)
+    # Get the dimensions of the input matrices
+    n, m = A.shape
+    m2, p = B.shape
+
+    # Check if the matrices can be multiplied
+    assert m == m2, "Incompatible dimensions for matrix multiplication"
+
+    # Initialize the result matrix with zeros
+    C = torch.zeros(n, p)
+
+    # Perform matrix multiplication using nested loops
+    for i in range(n):
+        for j in range(p):
+            for k in range(m):
+                C[i, j] += A[i, k] * B[k, j]
+
+    return C
+    # return torch.mm(A,B)
 
 # Unit testing your custom matrix multiply
 if __name__ == '__main__':
