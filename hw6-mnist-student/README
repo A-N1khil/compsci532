@@ -1,0 +1,30 @@
+## Versions of mnist_*.py for various testing purposes
+# mnist_basic.py
+* Uses built-in nn.Linear
+* Usage: python3 mnist_basic.py
+# mnist_custom_linear_builtin.py
+* Uses custom operator, but with built-in guts
+* Usage: python3 mnist_custom_linear_builtin.py
+# mnist_custom_linear_python.cpp
+* Uses custom operator, but with hand-written python linear implementation
+* Usage: python3 mnist_custom_linear_builtin.py
+# mnist_custom_linear_cpp_builtin.py
+* Uses custom cpp-based operator, but with built-in guts
+* Usage: python3 mnist_custom_linear_cpp_builtin.py
+# mnist_custom_linear_cpp_handwritten.py
+* Uses custom cpp-based operator, but with hand-written c++ linear implementation
+* Usage: python3 mnist_custom_linear_cpp_handwritten.py
+
+## Note on updating the mylinear_cpp_handwritten_extension
+Each time you edit mylinear_handwritten.cpp you must compile it by typing
+python3 setup.py install --user
+while in the mylinear_cpp_handwritten_extension folder
+
+# Linear Implementation Libraries
+mylinearPython.py
+* Python implementation of the nn.Linear operator with custom python guts
+mylinear_cpp_builtin_extension
+* C++ implementation of the nn.Linear operator with the built-in guts
+mylinear_cpp_handwritten_extension
+* C++ implementation fo the nn.Linear operator with hand-written c++ guts
+
