@@ -59,8 +59,8 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(32, 64, 3, 1)
         self.dropout1 = nn.Dropout2d(0.25)
         self.dropout2 = nn.Dropout2d(0.5)
-        self.fc1 = myLinear(9216, 128) // the custom python version now
-        self.fc2 = myLinear(128, 10) // the custom python version now
+        self.fc1 = myLinear(9216, 128) # the custom python version now
+        self.fc2 = myLinear(128, 10) # the custom python version now
 
     def forward(self, x):
         x = self.conv1(x)

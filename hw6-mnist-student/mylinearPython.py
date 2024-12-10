@@ -57,6 +57,11 @@ def custompythonTensorMM(A, B):
     # TODO put custom matrix multiply code here
     # should be equivalent to return torch.mm(A, B)
     # Get the dimensions of the input matrices
+
+    # Convert the tensors to numpy arrays
+    A = A.numpy()
+    B = B.numpy()
+
     n, m = A.shape
     m2, p = B.shape
 
@@ -64,7 +69,7 @@ def custompythonTensorMM(A, B):
     assert m == m2, "Incompatible dimensions for matrix multiplication"
 
     # Initialize the result matrix with zeros
-    C = torch.zeros(n, p)
+    C = numpy.zeros((n, p))
 
     # Perform matrix multiplication using nested loops
     for i in range(n):
@@ -72,7 +77,7 @@ def custompythonTensorMM(A, B):
             for k in range(m):
                 C[i, j] += A[i, k] * B[k, j]
 
-    return C
+    return torch.tensor(C)
     # return torch.mm(A,B)
 
 # Unit testing your custom matrix multiply
