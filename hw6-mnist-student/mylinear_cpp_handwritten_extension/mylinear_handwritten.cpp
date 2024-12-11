@@ -25,7 +25,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE
 
-
 #include <torch/extension.h>
 
 #include <iostream>
@@ -34,40 +33,55 @@
 // performs custom matrix multply (student code goes here)
 // C = A x B
 std::vector<torch::Tensor> customcppTensorMM(
-		torch::Tensor A,
-		torch::Tensor B)
+    torch::Tensor A,
+    torch::Tensor B)
 {
     // get dimensions
     int ax_size = A.size(1);
     int ay_size = A.size(0);
     int bx_size = B.size(1);
 
-    torch::Tensor C = torch::zeros({ay_size,bx_size});
-    
+    torch::Tensor C = torch::zeros({ay_size, bx_size});
+
     // Your handwritten MM goes here.
     // should be equivalent to the following
     // auto C = torch::mm(A, B);
     // hint: create accessor's to access each element of A, B, and C.
     // https://pytorch.org/cppdocs/notes/tensor_basics.html#cpu-accessors
+    auto A_accessor = A.accessor<float, 2>();
+    auto B_accessor = B.accessor<float, 2>();
+    auto C_accessor = C.accessor<float, 2>();
 
-   return {C};
+    for (int i = 0; i < ay_size; i++)
+    {
+        for (int j = 0; j < bx_size; j++)
+        {
+            float sum = 0.0;
+            for (int k = 0; k < ax_size; k++)
+            {
+                sum += A_accessor[i][k] * B_accessor[k][j];
+            }
+            C_accessor[i][j] = sum;
+        }
+    }
+
+    return {C};
 }
 
 std::vector<torch::Tensor> mylinear_handwritten_forward(
     torch::Tensor input,
-    torch::Tensor weights) 
+    torch::Tensor weights)
 {
     // auto output = torch::mm(input, weights.transpose(0, 1));
     auto output = customcppTensorMM(input, weights.transpose(0, 1));
-    
+
     return {output};
 }
 
 std::vector<torch::Tensor> mylinear_handwritten_backward(
     torch::Tensor grad_output,
     torch::Tensor input,
-    torch::Tensor weights
-    ) 
+    torch::Tensor weights)
 {
     // replace the builtin torch:mm with your own handwritten c++ matrix multiply
     auto grad_input = torch::mm(grad_output, weights);
@@ -78,7 +92,8 @@ std::vector<torch::Tensor> mylinear_handwritten_backward(
     return {grad_input, grad_weights};
 }
 
-PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-  m.def("forward", &mylinear_handwritten_forward, "myLinear forward");
-  m.def("backward", &mylinear_handwritten_backward, "myLinear backward");
+PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
+{
+    m.def("forward", &mylinear_handwritten_forward, "myLinear forward");
+    m.def("backward", &mylinear_handwritten_backward, "myLinear backward");
 }
