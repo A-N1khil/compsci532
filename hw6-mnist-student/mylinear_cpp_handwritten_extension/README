@@ -1,0 +1,7 @@
+# Helpful PyTorch C++ Documentation
+https://pytorch.org/tutorials/advanced/cpp_extension.html
+https://pytorch.org/cppdocs/frontend.html
+
+# Setup
+python3 setup.py install --user
+
